@@ -1,0 +1,11 @@
+{
+  "name": "me.matthewwaanders.sup",
+  "version": "1.0.0",
+  "description": "Create and share single use passwords that trigger flows! Never again do your friends have to wait for you to come home, you can just let them in.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

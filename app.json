@@ -1,0 +1,84 @@
+{
+  "id": "me.matthewwaanders.sup",
+  "version": "1.0.0",
+  "compatibility": ">=1.5.6",
+  "sdk": 2,
+  "name": {
+    "en": "Single Use Password"
+  },
+  "description": {
+    "en": "Create and share single use passwords that trigger Flows! Never again do your friends have to wait for you to come home, you can just let them in.",
+    "nl": "Maak en deel wachtwoorden voor enkel gebruik. Handig voor als je toegang tot je Flows wil geven aan vrienden!"
+  },
+  "category": [
+    "tools"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Matthew Waanders",
+    "email": "contact@matthewwaanders.me"
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "keyEntered",
+        "title": {
+          "en": "A key has been entered",
+          "nl": "Er is een sleutelcode ingevoerd"
+        },
+        "args": [
+          {
+            "name": "type",
+            "type": "text",
+            "placeholder": {
+              "en": "Type",
+              "nl": "Type"
+            }
+          }
+        ]
+      },
+      {
+        "id": "keyGenerated",
+        "title": {
+          "en": "A key has been generated",
+          "nl": "Er is een sleutelcode gegenereerd"
+        },
+        "tokens": [
+          {
+            "name": "URL",
+            "type": "string",
+            "title": {
+              "en": "The link to this code",
+              "nl": "De link voor deze code"
+            },
+            "example": "<homeyID>.homey.athom.com/app/me.matthewwaanders.sup/index.html?key=<code>"
+          }
+        ]
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "id": "generateKey",
+        "title": {
+          "en": "Generate a key",
+          "nl": "Genereer een sleutelcode"
+        },
+        "args": [
+          {
+            "name": "length",
+            "type": "number"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+}
