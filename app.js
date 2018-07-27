@@ -58,7 +58,7 @@ class SUPapp extends Homey.App {
 		};
 
         this.keyGenTrigger.trigger({
-			URL: `${this._homeyID}.homey.athom.com/app/${Homey.manifest.id}/index.html?key=${key}`
+			URL: `https://${this._homeyID}.homey.athom.com/app/${Homey.manifest.id}/index.html?key=${key}`
 		});
 
 		return this.addKey(data);

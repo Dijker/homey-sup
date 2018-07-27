@@ -52,8 +52,8 @@
             "name": "URL",
             "type": "string",
             "title": {
-              "en": "The link to this code",
-              "nl": "De link voor deze code"
+              "en": "URL",
+              "nl": "URL"
             },
             "example": "<homeyID>.homey.athom.com/app/me.matthewwaanders.sup/index.html?key=<code>"
           }
@@ -71,11 +71,19 @@
         "args": [
           {
             "name": "length",
-            "type": "number"
+            "type": "number",
+            "placeholder": {
+              "en": "5",
+              "nl": "5"
+            }
           },
           {
             "name": "type",
-            "type": "text"
+            "type": "text",
+            "placeholder": {
+              "en": "type",
+              "nl": "type"
+            }
           }
         ]
       }
