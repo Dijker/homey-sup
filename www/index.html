@@ -1,7 +1,7 @@
 <html>
     <head>
         <link rel="icon" type="image/svg" href="icon.svg">
-        <title>Homey SUP, please enter your password</title>
+        <title>Homey SUP, please enter your key</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="index.css">
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,300" rel="stylesheet">
@@ -12,11 +12,11 @@
         </div>
         <div id="content-container">
             <h1>Enter your one time key:</h1>
-            <input type="text" id="password" name="password" autofocus placeholder="Make Homey do magic">
+            <input type="text" id="key" name="key" autofocus placeholder="Make Homey do magic">
         </div>
     </body>
     <script>
-        let keyEntry = document.getElementById('password');
+        let keyEntry = document.getElementById('key');
 
         let key = getParameterByName('key');
         if (key) {

@@ -28,7 +28,7 @@ module.exports = [
         method: 'POST',
         path: '/key',
         public: true,
-        fn: async function (args, callback) {
+        fn: function (args, callback) {
             let result = Homey.app.checkKey(args.body.key);
             result ? callback(null, result) : callback('Key not found', null);
         }
