@@ -1,0 +1,37 @@
+html {
+    font-family: 'Roboto', sans-serif;
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    background-color: #b7042A;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+#content-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#content-container h1 {
+    width: 80%;
+    color: white;
+    font-weight: bolder;
+    padding: 0 0 0 0;
+}
+
+#content-container img {
+    width: 20%;
+    height: auto;
+}

@@ -3,34 +3,38 @@ const Homey = require('homey');
 module.exports = [
     {
         method: 'GET',
-        path: '/keys',
+        path: '/button/url',
         role: 'owner',
         fn: function (args, callback) {
-            let result = Homey.app.getKeys();
-
-            if (result instanceof Error) callback(result, null);
-            else callback(null, result);
+            let result = Homey.app.getButtonUrl(args.query.secret);
+            result ? callback(null, result) : callback('Error getting button url', null);
         }
     },
     {
         method: 'POST',
-        path: '/key/new',
-        public: true,
+        path: '/button/new',
         role: 'owner',
         fn: function (args, callback) {
-            let result = Homey.app.generateKey(args.body.length, args.body.type);
-
-            if (result instanceof Error) callback(result, null);
-            else callback(null, result);
+            let result = Homey.app.generateButton(args.body.title, args.body.uses);
+            result ? callback(null, result) : callback('Error generating button', null);
         }
     },
     {
         method: 'POST',
-        path: '/key',
+        path: '/button/delete',
+        role: 'owner',
+        fn: function (args, callback) {
+            let result = Homey.app.deleteButton(args.body.secret);
+            result ? callback(null, result) : callback('Error generating button', null);
+        }
+    },
+    {
+        method: 'POST',
+        path: '/button',
         public: true,
         fn: function (args, callback) {
-            let result = Homey.app.checkKey(args.body.key);
-            result ? callback(null, result) : callback('Key not found', null);
+            let result = Homey.app.checkButton(args.body.secret);
+            result ? callback(null, result) : callback('Button not found', null);
         }
     }
 ];

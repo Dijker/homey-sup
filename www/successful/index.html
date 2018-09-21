@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <link rel="icon" type="image/svg" href="icon.svg">
+        <title>Triggered successfuly</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300" rel="stylesheet">
+    </head>
+    <body>
+        <div id="content-container">
+            <img src="icon.svg">
+            <h1 id="message"></h1>
+        </div>
+    </body>
+    <script>
+        let messages = [
+            `This was the button you're looking for`,
+            `Captcha complete`,
+            `Congratulations, you pressed a button, I'm so proud of you`,
+            `I'm pretty sure this did something`,
+            `Look at this bright green page, something might've happened`
+        ];
+
+        let messageBox = document.getElementById('message');
+        messageBox.innerText = messages[Math.floor(Math.random() * (messages.length))];
+    </script>
+</html>

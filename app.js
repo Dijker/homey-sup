@@ -3,74 +3,75 @@
 const Homey = require('homey');
 const alphanumeric = ['A','a','B','b','C','c','D','d','E','e','F','f','G','g','H','h','I','i','J','j','K','k','L','l','M','m','N','n','O','o','P','p','Q','q','R','r','S','s','T','t','U','u','V','v','W','w','X','x','Y','y','Z','z','1','2','3','4','5','6','7','8','9','0','-'];
 
-class SUPapp extends Homey.App {
+class Triggered extends Homey.App {
 	
 	async onInit() {
-		this.log('SUP is running...');
+		this.log('Triggered is running...');
 
 		this._homeyID = await Homey.ManagerCloud.getHomeyId();
 
-		this.keys = {};
-
-		this.keyFlowTrigger = new Homey.FlowCardTrigger('keyEntered')
+		this.buttonFlowTrigger = new Homey.FlowCardTrigger('buttonPressed')
 			.register()
 			.registerRunListener((args, state) => {
-                return args.type === state.type;
+                return args.title === state.title;
         	});
 
-		this.keyGenTrigger = new Homey.FlowCardTrigger('keyGenerated')
-			.register();
-
-		this.keyGenAction = new Homey.FlowCardAction('generateKey')
-			.register()
-			.registerRunListener((args, state) => {
-				return this.generateKey(args.length, args.type);
-			});
+		Homey.ManagerSettings.set('buttons', {});
     }
 
-    addKey(data) {
-        if (!data.key || !data.type) return Error('Incorrect type or null value of key or type');
-        return this.keys[data.key] = data;
+    addButton(data) {
+        if (!data.title || !data.secret) return Error('Incorrect title or null value of title or secret');
+        let buttons = Homey.ManagerSettings.get('buttons');
+        buttons[data.secret] = data;
+        return Homey.ManagerSettings.set('buttons', buttons);
     }
 
-    checkKey(id) {
-		let key = this.getKey(id);
+    checkButton(secret) {
+		let button = this.getButton(secret);
 
-		if (key) {
-			this.deleteKey(id);
-			this.keyFlowTrigger.trigger(null, key);
+		if (button && (button.uses > 0 || button.uses === null)) {
+			this.buttonFlowTrigger.trigger(null, button);
 			return true;
-		} else return false;
+		} else if (button && button.uses === 0) {
+			this.deleteButton(secret);
+			return false
+		}
+
+		return false;
 	}
 
-	deleteKey(id) {
-		return delete this.keys[id];
+	deleteButton(secret) {
+        let buttons = Homey.ManagerSettings.get('buttons');
+        delete buttons[secret];
+        return Homey.ManagerSettings.set('buttons', buttons);
 	}
 
-	generateKey(length, type) {
-        let key = '';
+	generateButton(title, uses) {
+        let secret = '';
 
-        while (length--) key += alphanumeric[Math.floor(Math.random()*alphanumeric.length)];
+        for(let i = 0; i < 5; i++) secret += alphanumeric[Math.floor(Math.random()*alphanumeric.length)];
 
         let data = {
-        	key,
-			type,
+        	title,
+			secret,
+			uses
 		};
 
-        this.keyGenTrigger.trigger({
-			URL: `https://${this._homeyID}.homey.athom.com/app/${Homey.manifest.id}/index.html?key=${key}`
-		});
-
-		return this.addKey(data);
+		return this.addButton(data);
 	}
 
-	getKeys() {
-		return this.keys;
+	getButtons() {
+		return Homey.ManagerSettings.get('buttons');
 	}
 
-	getKey(id) {
-		return this.keys[id];
+	getButton(secret) {
+		return Homey.ManagerSettings.get('buttons')[secret];
+	}
+
+	getButtonUrl(secret) {
+		let button = this.getButton(secret);
+		return `https://${this._homeyID}.homey.athom.com/app/${Homey.manifest.id}/index.html?t=${button.title}&s=${button.secret}`;
 	}
 }
 
-module.exports = SUPapp;
+module.exports = Triggered;

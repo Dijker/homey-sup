@@ -1,27 +1,23 @@
 <html>
     <head>
         <link rel="icon" type="image/svg" href="icon.svg">
-        <title>Homey SUP, please enter your key</title>
+        <title>Triggered press the button</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="index.css">
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,300" rel="stylesheet">
     </head>
     <body>
-        <div id="status">
-
-        </div>
         <div id="content-container">
-            <h1>Enter your one time key:</h1>
-            <input type="text" id="key" name="key" autofocus placeholder="Make Homey do magic">
+            <h1>Press the button to create magic</h1>
+            <div id="button">
+            </div>
         </div>
     </body>
     <script>
-        let keyEntry = document.getElementById('key');
-
-        let key = getParameterByName('key');
-        if (key) {
-            keyEntry.value = key;
-        }
+        let title = getParameterByName('t');
+        let secret = getParameterByName('s');
+        let button = document.getElementById('button');
+        button.innerHTML = `<p>${title}</p>`;
 
         function getParameterByName(name, url) {
             if (!url) url = window.location.href;
@@ -33,42 +29,28 @@
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
 
-        async function postToUrl(key) {
-            let result = await fetch('/api/app/me.matthewwaanders.sup/key', {
+        async function postToUrl(buttonData) {
+            let result = await fetch('/api/app/me.matthewwaanders.sup/button', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    key
+                    buttonData
                 })
             });
 
             if (result.ok) {
-                document.getElementById('status').innerHTML = '<h2>Successful</h2>';
-                document.getElementById('status').style.backgroundColor = '#00cf61';
-                document.getElementById('status').style.marginTop = '0%';
+                location.href='successful/index.html';
+            } else {
+                location.href='unsuccessful/index.html';
             }
-            if (!result.ok) {
-                document.getElementById('status').innerHTML = '<h2>Unsuccessful</h2>';
-                document.getElementById('status').style.backgroundColor = '#cf3300';
-                document.getElementById('status').style.marginTop = '0%';
-            }
-
-            keyEntry.value = '';
-            return result;
         }
 
-        keyEntry.addEventListener('keydown', async function (event) {
-
-            document.getElementById('status').innerHTML = '';
-            document.getElementById('status').style.backgroundColor = '#f1f1f1';
-            document.getElementById('status').style.marginTop = '-10%';
-
-            if (event.key === "Enter" || event.key === "Return") {
-                let key = keyEntry.value;
-                postToUrl(key);
-            }
+        button.addEventListener('click', async function (event) {
+                postToUrl({title, secret});
         });
+
+
     </script>
 </html>

@@ -14,65 +14,42 @@ body {
     margin: 0;
 }
 
-#status {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #f1f1f1;
-    transition: margin-top 2s, background-color 3s;
-    color: #f1f1f1;
-    overflow: hidden;
-}
-
-#status h2 {
-    font-weight: 100;
-}
-
 #content-container {
     display: flex;
+    height: 100%;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 #content-container h1 {
     font-weight: 100;
+    width: 80%;
 }
 
-input {
-    font-weight: 300;
-    color: #7f7f7f;
-    border: none;
-    border-radius: 10px;
-    background-color: white;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+#button {
+    display: flex;
+    width: 15%;
+    height: auto;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    border-radius: 100px;
+    background-color: #b7042A;
 }
 
-input:focus {
-    outline: 0;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+#button:hover {
+    background-color: #d00430;
 }
 
-input:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+#button p {
+    width: 80%;
+    color: white;
 }
 
 @media (min-width:320px)  { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
-    #status {
-        width: 100%;
-        height: 10%;
-        margin-top: -10%;
-    }
-
-    #status h2 {
-        font-size: 1.5em;
-        margin: .75% 0;
-    }
-
     #content-container {
         width: 100%;
         height: 75%;
@@ -83,25 +60,12 @@ input:hover {
         margin: 0 0 10% 0;
     }
 
-    input {
-        font-size: 1em;
-        width: 80%;
-        padding: 12px 12px 12px 12px;
+    #button {
+        width: 65%;
     }
 }
 
 @media (min-width:801px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */
-    #status {
-        width: 100%;
-        height: 10%;
-        margin-top: -10%;
-    }
-
-    #status h2 {
-        font-size: 2em;
-        margin: .75% 0;
-    }
-
     #content-container {
         width: 100%;
         height: 75%;
@@ -112,9 +76,7 @@ input:hover {
         margin: 0 0 3% 0;
     }
 
-    input {
-        font-size: 1.5em;
-        width: 50%;
-        padding: 12px 12px 12px 12px;
+    #button {
+        width: 10%;
     }
 }

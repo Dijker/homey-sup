@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <link rel="icon" type="image/svg" href="icon.svg">
+        <title>Triggered unsuccessfuly</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300" rel="stylesheet">
+    </head>
+    <body>
+        <div id="content-container">
+            <img src="icon.svg">
+            <h1 id="message"></h1>
+        </div>
+    </body>
+    <script>
+        let messages = [
+            `I'm sorry Dave, I'm afraid I can't let you do that`,
+            `This wasn't the button you were looking for`,
+            `You managed to fail pressing a button, congratulations`,
+            `Hmmmmm, red, that means something went wrong`,
+            `Let's hope you didn't break my Homey`
+        ];
+
+        let messageBox = document.getElementById('message');
+        messageBox.innerText = messages[Math.floor(Math.random() * (messages.length))];
+    </script>
+</html>
