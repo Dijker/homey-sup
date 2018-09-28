@@ -36,7 +36,7 @@ class Triggered extends Homey.App {
 			if (button.uses !== null) button.uses--;
 			this.addButton(button);
 
-			this.buttonFlowTrigger.trigger(button.title, null);
+			this.buttonFlowTrigger.trigger(null, button.title);
 			return true;
 		} else if (button && button.uses === 0) {
             this.log('Last use!');
