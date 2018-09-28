@@ -1,0 +1,142 @@
+<html>
+    <head>
+        <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+        <style>
+            .container {
+                list-style: none;
+            }
+            .buttons-list {
+                border: 1px solid #eee;
+                border-radius: 3px;
+                margin-bottom: 1em;
+            }
+            .buttons-list .title {
+                display: block;
+                padding: 1em;
+                background: #f9f9f9;
+                line-height: 2em;
+            }
+            .buttons-list .title > * {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .buttons-list .title .name {
+                font-weight: 400;
+            }
+            .buttons-list .title .icon {
+                width: 24px;
+                height: 24px;
+                background: black;
+                -webkit-mask-image: url(/app/me.matthewwaanders.sup/assets/icon.svg);
+                -webkit-mask-repeat: no-repeat;
+                -webkit-mask-size: cover;
+                margin-right: 10px;
+            }
+            .buttons-list > p {
+                padding: 1em;
+            }
+
+            #buttons {
+                list-style: none;
+                margin-bottom: 0;
+            }
+
+            .trigger {
+                display: flex;
+                flex-direction: row;
+                margin: 2em 0 2em 2em;
+                border-bottom: #eeeeee;
+            }
+
+            .trigger .bold {
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+
+            .trigger div {
+                width: 100%;
+                flex-basis: 100%;
+                text-align: left;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                word-break: break-word;
+            }
+        </style>
+    </head>
+    <body>
+        <ul class="container">
+            <li class="buttons-list">
+                <div class="title">
+                    <span class="icon"></span>
+                    <span class="name">Available buttons</span>
+                </div>
+
+                <ul id="buttons">
+                    <li class="trigger"><div class="bold">Title</div><div class="bold">Secret</div><div class="bold">Uses</div><div class="bold">Link</div></li>
+                </ul>
+            </li>
+        </ul>
+
+        <fieldset>
+            <legend>Create buttons</legend>
+            <div class="field row">
+                <label for="title">Title</label>
+                <input id="title" type="text" placeholder="Trigger ...">
+            </div>
+
+            <div class="field row">
+                <label for="uses">Uses</label>
+                <input id="uses" type="number" placeholder="Leave empty for infinite, 1, 2, 3...">
+            </div>
+
+            <div class="field row">
+                <button id="generate" class="left">Generate button</button>
+            </div>
+        </fieldset>
+    <script>
+        function onHomeyReady( Homey ){
+
+            let buttonList = document.getElementById('buttons');
+            let generateButton = document.getElementById('generate');
+
+            let titleField = document.getElementById('title');
+            let usesField = document.getElementById('uses');
+
+            function refreshButtons() {
+                Homey.get('buttons', function (err, buttons) {
+                    if (err) return Homey.alert(err);
+
+                    let html = '<li class="trigger"><div class="bold">Title</div><div class="bold">Secret</div><div class="bold">Uses</div><div class="bold">Link</div></li>';
+
+                    for (let buttonKey in buttons) {
+                        let button = buttons[buttonKey];
+                        Homey.api('GET', `/button/url?secret=${button.secret}`, null, function (err, url) {
+                            if (err) return Homey.alert(err);
+                            html += `<li class="trigger"><div><p>${button.title}</p></div><div><p>${button.secret}</p></div><div><p>${button.uses}</p></div><div><p>${url}</p></div></li>`;
+                            buttonList.innerHTML = html;
+                        });
+                    }
+                });
+            }
+
+            generateButton.addEventListener('click', function (e) {
+               let buttonObject = {};
+               buttonObject['title'] = titleField.value;
+               buttonObject['uses'] = usesField.value || null;
+
+               Homey.api('POST', '/button/new', buttonObject, function (err, result) {
+                   if (err) return Homey.alert(err);
+                    titleField.value = '';
+                    usesField.value = '';
+                   refreshButtons();
+                   Homey.ready();
+               });
+            });
+
+            refreshButtons();
+            Homey.ready();
+
+        }
+    </script>
+    </body>
+</html>

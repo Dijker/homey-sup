@@ -4,7 +4,7 @@ const Homey = require('homey');
 const alphanumeric = ['A','a','B','b','C','c','D','d','E','e','F','f','G','g','H','h','I','i','J','j','K','k','L','l','M','m','N','n','O','o','P','p','Q','q','R','r','S','s','T','t','U','u','V','v','W','w','X','x','Y','y','Z','z','1','2','3','4','5','6','7','8','9','0','-'];
 
 class Triggered extends Homey.App {
-	
+
 	async onInit() {
 		this.log('Triggered is running...');
 
@@ -20,23 +20,31 @@ class Triggered extends Homey.App {
     }
 
     addButton(data) {
-        if (!data.title || !data.secret) return Error('Incorrect title or null value of title or secret');
+        if (!data.title || !data.secret) return Error('Incorrect data');
         let buttons = Homey.ManagerSettings.get('buttons');
         buttons[data.secret] = data;
-        return Homey.ManagerSettings.set('buttons', buttons);
+        Homey.ManagerSettings.set('buttons', buttons);
+        return data;
     }
 
     checkButton(secret) {
 		let button = this.getButton(secret);
+		this.log(button);
 
-		if (button && (button.uses > 0 || button.uses === null)) {
-			this.buttonFlowTrigger.trigger(null, button);
+		if (button && (button.uses === null || button.uses > 0)) {
+			this.log('Button pressed!');
+			if (button.uses !== null) button.uses--;
+			this.addButton(button);
+
+			this.buttonFlowTrigger.trigger(button.title, null);
 			return true;
 		} else if (button && button.uses === 0) {
-			this.deleteButton(secret);
+            this.log('Last use!');
+            this.deleteButton(secret);
 			return false
 		}
 
+		this.log('Something went wrong here!');
 		return false;
 	}
 
@@ -65,7 +73,8 @@ class Triggered extends Homey.App {
 	}
 
 	getButton(secret) {
-		return Homey.ManagerSettings.get('buttons')[secret];
+		let buttons = this.getButtons();
+		return buttons[secret];
 	}
 
 	getButtonUrl(secret) {

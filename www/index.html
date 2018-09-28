@@ -36,14 +36,15 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    buttonData
+                    title: buttonData.title,
+                    secret: buttonData.secret
                 })
             });
 
             if (result.ok) {
                 location.href='successful/index.html';
             } else {
-                location.href='unsuccessful/index.html';
+                location.href=`unsuccessful/index.html?status=${result.status}&statusText=${result.statusText}`;
             }
         }
 
